@@ -677,10 +677,15 @@ const EnhancedSlackAlertSystem = () => {
 
             {/* Main Content Area */}
             <div className="max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col-reverse md:flex-row gap-6 flex-grow">
-                {/* Sidebar - Alert List */}
-                <div className="w-full md:w-80 flex-shrink-0"> {/* Increased width slightly */}
-                    <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
-                        <div className="p-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center sticky top-[73px] z-[5]"> {/* Sticky header */}
+                 {/* ================== */}
+                {/* START: Sidebar Fix */}
+                {/* ================== */}
+                <div className="w-full md:w-80 flex-shrink-0">
+                    <div className="flex flex-col h-full"> {/* Use flex-col for structure */}
+
+                        {/* Sticky Header Part */}
+                        {/* This part sticks, has rounded top corners and a bottom border */}
+                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-t-lg flex justify-between items-center sticky top-[73px] z-10 flex-shrink-0"> {/* Adjust top value if control panel height changes */}
                             <h2 className="font-medium text-gray-700 flex items-center gap-2">
                                 <Bell className="h-4 w-4 text-gray-500" />
                                 Recent Alerts
@@ -690,56 +695,73 @@ const EnhancedSlackAlertSystem = () => {
                             </span>
                         </div>
 
-                        <div className="divide-y divide-gray-100 max-h-[calc(100vh-150px)] overflow-y-auto"> {/* Calculated max height */}
+                        {/* Scrollable List Part */}
+                        {/* This part scrolls, has rounded bottom corners, continues the border, and has the shadow */}
+                        <div className="divide-y divide-gray-100 overflow-y-auto bg-white border border-gray-200 border-t-0 rounded-b-lg shadow flex-grow min-h-0"> {/* Added min-h-0 and flex-grow */}
+                            {/* Calculate max-height dynamically or set a reasonable default */}
+                            {/* Example using viewport height minus estimated static heights: max-h-[calc(100vh-160px)] */}
                             {alerts.map((a, i) => (
+                                // Alert Card Item (no changes inside the card itself)
                                 <div
-                                    key={`${a.campaignId}-${a.timestamp}-${i}`} // More robust key
-                                    className={`p-3 cursor-pointer transition-colors ${
-                                        currentAlertIndex === i ? 'bg-blue-50 border-l-4 border-blue-500' : 'hover:bg-gray-50'
+                                    key={`${a.campaignId}-${a.timestamp}-${i}`}
+                                    className={`p-3 cursor-pointer transition-colors relative ${ // Added relative positioning
+                                        currentAlertIndex === i ? 'bg-blue-50' : 'hover:bg-gray-50'
                                     }`}
                                     onClick={() => setCurrentAlertIndex(i)}
                                 >
-                                     <div className="flex justify-between items-start mb-1">
-                                         <div className={`text-xs font-semibold px-1.5 py-0.5 rounded ${priorityBadges[a.priority].bg} ${priorityBadges[a.priority].text}`}>
-                                           {priorityBadges[a.priority].label}
-                                         </div>
-                                         <span className="text-xs text-gray-500 flex-shrink-0 ml-2">{formatRelativeTime(a.timestamp)}</span>
-                                     </div>
-
-                                     <div className="flex items-center gap-2 mb-1">
-                                         <div className={`p-1 rounded-md ${metricColors[a.metric]?.bg || metricColors.spend.bg}`}> {/* Optional chaining and fallback */}
-                                            {metricIcons[a.metric] || <Activity className="h-4 w-4" /> } {/* Fallback icon size fixed */}
-                                         </div>
-                                         <div>
-                                             <div className="font-medium text-sm text-gray-800">{a.metric.replace('_', ' ').toUpperCase()}</div>
-                                             <div className={`text-xs font-bold ${a.direction === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
-                                                 {a.direction === 'increase' ? <TrendingUp className="inline h-3 w-3 mr-0.5"/> : <TrendingDown className="inline h-3 w-3 mr-0.5" />}
-                                                 {a.direction === 'increase' ? '+' : ''}{a.percentChange}%
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div className="text-xs text-gray-600 mt-1.5 flex items-center justify-between flex-wrap gap-1">
-                                         <span className="font-medium">{a.campaign.substring(0, 25)}{a.campaign.length > 25 ? '...' : ''}</span>
-                                         <div className="flex items-center gap-1">
-                                             <span className="text-gray-500">{a.platform}</span>
-                                             <div className={`px-1.5 py-0.5 rounded-full ${statusColors[a.status].bg} ${statusColors[a.status].text} text-xs font-medium`}>
-                                                {a.status.charAt(0).toUpperCase() + a.status.slice(1)}
-                                             </div>
-                                         </div>
-                                     </div>
-                                     {feedbackGiven[i] && (
-                                         <div className="mt-1.5 text-xs text-gray-500 italic flex items-center gap-1">
-                                             {feedbackGiven[i] === 'Useful' && <ThumbsUp className="h-3 w-3 text-green-500" />}
-                                             {feedbackGiven[i] === 'Not Useful' && <ThumbsDown className="h-3 w-3 text-red-500" />}
-                                             {feedbackGiven[i] === 'False Positive' && <Bug className="h-3 w-3 text-yellow-500" />}
-                                             Feedback: {feedbackGiven[i]}
-                                         </div>
-                                     )}
+                                    {/* Blue selection indicator line */}
+                                    {currentAlertIndex === i && (
+                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                                    )}
+                                    <div className={`${currentAlertIndex === i ? 'ml-1' : 'ml-0'}`}> {/* Indent content slightly when selected */}
+                                        {/* Priority and Timestamp */}
+                                        <div className="flex justify-between items-start mb-1">
+                                          <div className={`text-xs font-semibold px-1.5 py-0.5 rounded ${priorityBadges[a.priority].bg} ${priorityBadges[a.priority].text}`}>
+                                            {priorityBadges[a.priority].label}
+                                          </div>
+                                          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">{formatRelativeTime(a.timestamp)}</span>
+                                        </div>
+                                        {/* Metric Icon, Name, % Change */}
+                                        <div className="flex items-center gap-2 mb-1">
+                                          <div className={`p-1 rounded-md ${metricColors[a.metric]?.bg || metricColors.spend.bg}`}>
+                                             {metricIcons[a.metric] || <Activity className="h-4 w-4" /> }
+                                          </div>
+                                          <div>
+                                              <div className="font-medium text-sm text-gray-800">{a.metric.replace('_', ' ').toUpperCase()}</div>
+                                              <div className={`text-xs font-bold ${a.direction === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
+                                                  {a.direction === 'increase' ? <TrendingUp className="inline h-3 w-3 mr-0.5"/> : <TrendingDown className="inline h-3 w-3 mr-0.5" />}
+                                                  {a.direction === 'increase' ? '+' : ''}{a.percentChange}%
+                                              </div>
+                                          </div>
+                                        </div>
+                                        {/* Campaign Name, Platform, Status */}
+                                        <div className="text-xs text-gray-600 mt-1.5 flex items-center justify-between flex-wrap gap-1">
+                                            <span className="font-medium">{a.campaign.substring(0, 25)}{a.campaign.length > 25 ? '...' : ''}</span>
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-gray-500">{a.platform}</span>
+                                                <div className={`px-1.5 py-0.5 rounded-full ${statusColors[a.status].bg} ${statusColors[a.status].text} text-xs font-medium`}>
+                                                   {a.status.charAt(0).toUpperCase() + a.status.slice(1)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* Feedback Indicator */}
+                                        {feedbackGiven[i] && (
+                                            <div className="mt-1.5 text-xs text-gray-500 italic flex items-center gap-1">
+                                                {feedbackGiven[i] === 'Useful' && <ThumbsUp className="h-3 w-3 text-green-500" />}
+                                                {feedbackGiven[i] === 'Not Useful' && <ThumbsDown className="h-3 w-3 text-red-500" />}
+                                                {feedbackGiven[i] === 'False Positive' && <Bug className="h-3 w-3 text-yellow-500" />}
+                                                Feedback: {feedbackGiven[i]}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
+                {/* ================ */}
+                {/* END: Sidebar Fix */}
+                {/* ================ */}
 
                 {/* Main Alert Content */}
                 <div className="flex-grow min-w-0"> {/* Added min-w-0 for flex truncation */}
