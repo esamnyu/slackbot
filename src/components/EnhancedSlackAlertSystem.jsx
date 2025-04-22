@@ -1,13 +1,164 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
+    // Icons for SlackInsightBot
+    ArrowRight, ArrowDown, ArrowUp, Database, MessageSquare as MessageSquareIcon, // Renamed MessageSquare for clarity
+    BarChart3, BrainCircuit, LineChart as LineChartIcon, Users as UsersIcon, RefreshCw as RefreshCwIcon, // Renamed icons for clarity
+
+    // Icons for EnhancedSlackAlertSystem
     AlertTriangle, ExternalLink, Activity, TrendingUp, TrendingDown,
     DollarSign, BarChart, Clock, Users, MousePointer, Target,
-    Bell, CheckCircle, UserCheck, MessageSquare, ChevronDown, ChevronUp,
-    EyeOff, Flag, ArrowRight, RefreshCw, Filter, MoreHorizontal, Info,
+    Bell, CheckCircle, UserCheck, ChevronDown, ChevronUp,
+    EyeOff, Flag, Filter, MoreHorizontal, Info,
     ThumbsUp, ThumbsDown, Bug // Replaced SearchX with Bug
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
+//===============================================
+// Component 1: SlackInsightBot (Pipeline View)
+//===============================================
+const SlackInsightBot = () => {
+  // Enhanced styles for components - using Tailwind CSS classes
+  const boxStyle = "rounded-lg px-6 py-5 shadow-lg border border-gray-200 flex flex-col items-center text-center min-h-[230px] justify-center transition-transform duration-200 ease-in-out hover:scale-105";
+  const arrowContainerStyle = "flex items-center justify-center h-full";
+  const arrowStyle = "text-gray-600 mx-3 flex-shrink-0";
+  const titleStyle = "font-semibold text-lg mb-2";
+  const subtitleStyle = "text-sm text-gray-700 mb-1";
+  const detailStyle = "text-xs text-gray-500 mb-0.5";
+  const channelBadge = "bg-purple-200 text-purple-900 px-2.5 py-1 rounded-full text-xs font-bold inline-block shadow-sm";
+
+  // Style for the highlighted Mock Dashboard box
+  const highlightedBoxStyle = "border-2 border-indigo-400 shadow-xl ring-4 ring-indigo-200 ring-opacity-50";
+
+  return (
+    // Main container with padding and a subtle gradient background
+    <div className="p-8 bg-gradient-to-br from-gray-50 to-blue-50 font-sans w-full">
+      <h1 className="text-3xl font-bold text-center mb-16 text-gray-800 tracking-tight">Slack Insight Bot - Closed-Loop Analytics Pipeline</h1>
+
+      {/* Main pipeline flow */}
+      <div className="flex flex-col lg:flex-row items-stretch justify-center gap-6 mb-12">
+
+        {/* Step 1: Campaign Data */}
+        <div className={`${boxStyle} bg-gradient-to-b from-blue-100 to-blue-50 w-full lg:w-[18%]`}>
+          <Database className="text-blue-700 mb-3" size={36} />
+          <h2 className={titleStyle}>1. Campaign Data</h2>
+          <p className={detailStyle}>APIs, DB Logs, PoC Metrics, CSV/JSON</p> {/* Combined for space */}
+        </div>
+
+        {/* Arrow */}
+        <div className={`${arrowContainerStyle} w-full lg:w-auto my-4 lg:my-0`}>
+            <ArrowRight className={arrowStyle} size={28} strokeWidth={2.5}/>
+        </div>
+
+        {/* Step 2: Data Ingestion & Preprocessing */}
+        <div id="ingestion-preprocessing" className={`${boxStyle} bg-gradient-to-b from-green-100 to-green-50 w-full lg:w-[18%]`}>
+          <LineChartIcon className="text-green-700 mb-3" size={36} /> {/* Use renamed icon */}
+          <h2 className={titleStyle}>2. Ingestion & Preprocessing</h2>
+          <p className={subtitleStyle}>Python</p>
+          <p className={detailStyle}>Cleans, normalizes, filters</p>
+          <div className="mt-2.5">
+            <span className={channelBadge}>geo-optional</span>
+          </div>
+        </div>
+
+        {/* Arrow */}
+        <div className={`${arrowContainerStyle} w-full lg:w-auto my-4 lg:my-0`}>
+            <ArrowRight className={arrowStyle} size={28} strokeWidth={2.5}/>
+        </div>
+
+        {/* Step 3: Feature Enrichment */}
+        <div id="feature-enrichment" className={`${boxStyle} bg-gradient-to-b from-yellow-100 to-yellow-50 w-full lg:w-[18%]`}>
+          <BarChart3 className="text-yellow-700 mb-3" size={36} />
+            <h2 className={titleStyle}>3. Feature Enrichment</h2>
+          <p className={subtitleStyle}>Wind, Z-scores</p>
+          <p className={detailStyle}>Rolling metrics, Anomaly detection</p>
+          <div className="mt-2.5">
+            <span className={channelBadge}>campaign-alerts</span>
+          </div>
+        </div>
+
+        {/* Arrow */}
+        <div className={`${arrowContainerStyle} w-full lg:w-auto my-4 lg:my-0`}>
+            <ArrowRight className={arrowStyle} size={28} strokeWidth={2.5}/>
+        </div>
+
+        {/* Step 4: OpenAI GPT */}
+        <div className={`${boxStyle} bg-gradient-to-b from-purple-100 to-purple-50 w-full lg:w-[18%]`}>
+          <BrainCircuit className="text-purple-700 mb-3" size={36} />
+          <h2 className={titleStyle}>4. OpenAI GPT</h2>
+          <p className={subtitleStyle}>Alert Generation</p>
+          <p className={detailStyle}>Contextualizes data, Human-readable</p>
+        </div>
+
+        {/* Arrow */}
+        <div className={`${arrowContainerStyle} w-full lg:w-auto my-4 lg:my-0`}>
+            <ArrowRight className={arrowStyle} size={28} strokeWidth={2.5}/>
+        </div>
+
+        {/* Step 5: Mock Dashboard - HIGHLIGHTED */}
+        <div className={`${boxStyle} ${highlightedBoxStyle} bg-gradient-to-b from-indigo-100 to-indigo-50 w-full lg:w-[18%]`}>
+          <BarChart3 className="text-indigo-700 mb-3" size={36} />
+          <h2 className={titleStyle}>5. Mock Dashboard</h2>
+          <p className={subtitleStyle}>Linked in Alert</p>
+          <p className={detailStyle}>Visualization, Drill-down</p>
+        </div>
+      </div>
+
+      {/* Arrow pointing down towards Users */}
+      <div className="flex justify-center mb-4">
+        <ArrowDown className="text-gray-500 animate-bounce" size={28} strokeWidth={2.5}/>
+      </div>
+
+      {/* Users Section */}
+      <div className="mb-12 flex flex-col items-center justify-center">
+        <div className={`${boxStyle} bg-gradient-to-b from-red-100 to-red-50 max-w-md w-full lg:w-[40%]`}>
+          <UsersIcon className="text-red-700 mb-3" size={36} /> {/* Use renamed icon */}
+          <h2 className={titleStyle}>6. Ops/Analytics Team (Users)</h2>
+          <p className={detailStyle}>Consume alerts, Review dashboards, Provide feedback (false alarms, ROI, notes)</p> {/* Combined */}
+        </div>
+      </div>
+
+      {/* Feedback Loop Section - Refined for Clarity */}
+      <div className="relative mt-10 flex flex-col items-center justify-center text-center px-4">
+          {/* Central Feedback Icon */}
+          <div className="mb-4 p-3 bg-gray-200 rounded-full shadow-md">
+              <RefreshCwIcon className="text-gray-800 animate-spin [animation-duration:3s]" size={32} strokeWidth={2.5}/> {/* Use renamed icon */}
+          </div>
+
+          {/* Feedback Description Box - Styled like the reference image */}
+          <div className="w-full max-w-xl mx-auto mb-6 p-5 bg-white rounded-lg shadow-lg border border-gray-300">
+              <p className="font-semibold text-lg mb-3 text-gray-800">Feedback Loop:</p>
+              <p className="text-sm text-gray-600 mb-4">
+                  User feedback (false alarms, ROI, notes) is channeled back to improve the system.
+              </p>
+              {/* Explicit visual cues for feedback destination - Made clearer */}
+              {/* Using inline-flex for better alignment and spacing */}
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm font-medium">
+                  <div className="inline-flex items-center gap-1.5 p-2 bg-green-100 text-green-800 rounded-md border border-green-300 shadow-sm">
+                      <ArrowUp size={18} strokeWidth={2.5}/>
+                      <span>To: Ingestion/Preprocessing</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 p-2 bg-yellow-100 text-yellow-800 rounded-md border border-yellow-300 shadow-sm">
+                      <ArrowUp size={18} strokeWidth={2.5}/>
+                      <span>To: Feature Enrichment</span>
+                  </div>
+              </div>
+          </div>
+
+          {/* Motto */}
+          <div className="mt-6 p-5 bg-gray-800 rounded-lg mx-auto max-w-lg shadow-xl">
+              <p className="font-bold italic text-white text-base">
+                  "Closed-loop learning system—feeding real user feedback"
+              </p>
+          </div>
+      </div>
+    </div>
+  );
+};
+
+
+//===============================================
+// Component 2: EnhancedSlackAlertSystem (Alerts View)
+//===============================================
 const EnhancedSlackAlertSystem = () => {
     const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
     const [showLiveDemo, setShowLiveDemo] = useState(false);
@@ -327,6 +478,7 @@ const EnhancedSlackAlertSystem = () => {
           };
         }
 
+        // Fallback for unhandled metrics
         return {
           whatHappened: `${alert.metric.toUpperCase()} has shown an anomalous ${alert.direction} to ${alert.value}, which is ${alert.direction === "increase" ? "+" : ""}${alert.percentChange}% from the average on ${alert.platform}.`,
           whyItMatters: "This deviation could impact campaign performance and efficiency. Immediate investigation is recommended to understand the root cause and take appropriate action.",
@@ -341,10 +493,12 @@ const EnhancedSlackAlertSystem = () => {
 
     // Live demo simulation logic
     useEffect(() => {
+        let intervalId;
         if (showLiveDemo) {
-            const interval = setInterval(() => {
+            intervalId = setInterval(() => {
                 setLiveDemoTime(prev => {
-                    if (prev === 5 && !incomingAlert) {
+                    const nextTime = prev + 1;
+                    if (nextTime === 5 && !incomingAlert) {
                         const randomAlertIndex = Math.floor(Math.random() * alerts.length);
                         setIncomingAlert(alerts[randomAlertIndex]);
                         setAnimateIncoming(true);
@@ -354,16 +508,20 @@ const EnhancedSlackAlertSystem = () => {
                             setCurrentAlertIndex(randomAlertIndex);
                         }, 2000);
                     }
-                    if (prev >= 10) {
+                    if (nextTime >= 10) {
                         setIncomingAlert(null);
-                        return 0;
+                        return 0; // Reset timer
                     }
-                    return prev + 1;
+                    return nextTime;
                 });
             }, 1000);
-            return () => clearInterval(interval);
+        } else {
+            setLiveDemoTime(0); // Reset timer when stopping demo
+            setIncomingAlert(null);
+            setAnimateIncoming(false);
         }
-    }, [showLiveDemo, incomingAlert, alerts.length]); // Added alerts.length dependency
+        return () => clearInterval(intervalId); // Cleanup interval on unmount or when demo stops
+    }, [showLiveDemo, incomingAlert, alerts]); // Ensure alerts is in dependency array
 
     // Get current alert data
     const alert = alerts[currentAlertIndex];
@@ -384,14 +542,13 @@ const EnhancedSlackAlertSystem = () => {
     const formatRelativeTime = (timestamp) => {
         const now = new Date();
         const then = new Date(timestamp);
-        const diffMinutes = Math.floor((now - then) / (1000 * 60));
+        const diffSeconds = Math.floor((now - then) / 1000);
 
-        if (diffMinutes < 1) return 'just now';
+        if (diffSeconds < 60) return 'just now';
+        const diffMinutes = Math.floor(diffSeconds / 60);
         if (diffMinutes < 60) return `${diffMinutes}m ago`;
-
         const diffHours = Math.floor(diffMinutes / 60);
         if (diffHours < 24) return `${diffHours}h ago`;
-
         const diffDays = Math.floor(diffHours / 24);
         return `${diffDays}d ago`;
     };
@@ -417,39 +574,40 @@ const EnhancedSlackAlertSystem = () => {
             } else {
                 newIndex = prevIndex > 0 ? prevIndex - 1 : alerts.length - 1;
             }
-            setShowThreads(false); // Reset thread visibility on navigation
+            // Optionally reset states tied to specific alerts when navigating
+            setShowThreads(false);
+            // Keep expandedDetails, showMiniChart, showReactions settings unless you want them reset too
             return newIndex;
         });
     }, [alerts.length]);
 
     // Add a check for alert existence before rendering details
     if (!alert) {
-        return <div>Loading alerts or no alerts available...</div>; // Or some other loading/empty state
+        return <div className="p-6 text-center text-gray-600">Loading alerts or no alerts available...</div>; // Or some other loading/empty state
     }
 
-
     return (
-        <div className="flex flex-col bg-gray-100 min-h-screen">
+        <div className="flex flex-col bg-gray-100 min-h-screen font-sans">
             {/* Control Panel */}
-            <div className="bg-white border-b border-gray-200 p-4">
-                <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center">
-                     <div className="flex items-center mb-2 md:mb-0">
-                         <h1 className="text-xl font-bold text-gray-800 mr-4">Campaign Insight Bot</h1>
-                         <div className="flex space-x-2">
+            <div className="bg-white border-b border-gray-200 p-4 sticky top-0 z-10">
+                <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-y-3">
+                     <div className="flex items-center flex-wrap gap-x-4 gap-y-2">
+                         <h1 className="text-xl font-bold text-gray-800 whitespace-nowrap">Campaign Insight Bot</h1>
+                         <div className="flex flex-wrap space-x-2">
                            <button
                              onClick={() => setShowLiveDemo(!showLiveDemo)}
-                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 ${
-                               showLiveDemo ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 transition-colors ${
+                               showLiveDemo ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                              }`}
                            >
-                             <RefreshCw className="h-3 w-3" />
+                             <RefreshCwIcon className={`h-3 w-3 ${showLiveDemo ? 'animate-spin' : ''}`} /> {/* Use Renamed Icon */}
                              {showLiveDemo ? 'Stop Live Demo' : 'Start Live Demo'}
                            </button>
 
                            <button
                              onClick={() => setShowMiniChart(!showMiniChart)}
-                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 ${
-                               showMiniChart ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 transition-colors ${
+                               showMiniChart ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                              }`}
                            >
                              <BarChart className="h-3 w-3" />
@@ -458,8 +616,8 @@ const EnhancedSlackAlertSystem = () => {
 
                            <button
                              onClick={() => setExpandedDetails(!expandedDetails)}
-                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 ${
-                               expandedDetails ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
+                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 transition-colors ${
+                               expandedDetails ? 'bg-purple-100 text-purple-800 hover:bg-purple-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                              }`}
                            >
                              <Info className="h-3 w-3" />
@@ -468,30 +626,31 @@ const EnhancedSlackAlertSystem = () => {
 
                            <button
                              onClick={() => setShowReactions(!showReactions)}
-                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 ${
-                               showReactions ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'
+                             className={`text-sm px-3 py-1 rounded-full flex items-center gap-1 transition-colors ${
+                               showReactions ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                              }`}
                            >
-                             <MessageSquare className="h-3 w-3" />
-                             {showReactions ? 'Hide Reactions' : 'Show Reactions'}
+                             <MessageSquareIcon className="h-3 w-3" /> {/* Use Renamed Icon */}
+                             {showReactions ? 'Hide Social' : 'Show Social'} {/* Changed Label */}
                            </button>
                          </div>
                      </div>
 
                     <div className="flex items-center space-x-3">
-                       <div className="text-sm flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
+                       <div className="text-sm flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
                          <Filter className="h-3 w-3 text-gray-500" />
-                         <span>Filter: All Alerts</span>
+                         <span className="text-gray-700">Filter: All Alerts</span>
                        </div>
 
                        <select
-                           className="text-sm border border-gray-200 rounded px-2 py-1"
+                           title="Select Alert"
+                           className="text-sm border border-gray-300 rounded px-2 py-1 bg-white hover:border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                            value={currentAlertIndex}
                            onChange={(e) => setCurrentAlertIndex(parseInt(e.target.value, 10))}
                        >
                          {alerts.map((a, i) => (
                            <option key={i} value={i}>
-                             {`${i + 1}: ${a.campaign.substring(0,15)}...: ${a.metric} ${a.direction}`}
+                             {`${i + 1}: ${a.campaign.substring(0,15)}... ${a.metric} ${a.direction}`}
                            </option>
                          ))}
                        </select>
@@ -499,13 +658,15 @@ const EnhancedSlackAlertSystem = () => {
                        <div className="flex space-x-1">
                            <button
                                onClick={() => navigateAlert('prev')}
-                               className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
+                               title="Previous Alert"
+                               className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-1 rounded transition-colors"
                            >
                                <ChevronUp className="h-4 w-4" />
                            </button>
                            <button
                                onClick={() => navigateAlert('next')}
-                               className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
+                               title="Next Alert"
+                               className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-1 rounded transition-colors"
                            >
                                <ChevronDown className="h-4 w-4" />
                            </button>
@@ -514,57 +675,63 @@ const EnhancedSlackAlertSystem = () => {
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div className="max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col-reverse md:flex-row gap-6">
+            {/* Main Content Area */}
+            <div className="max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col-reverse md:flex-row gap-6 flex-grow">
                 {/* Sidebar - Alert List */}
-                <div className="w-full md:w-72 flex-shrink-0">
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
-                        <div className="p-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+                <div className="w-full md:w-80 flex-shrink-0"> {/* Increased width slightly */}
+                    <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
+                        <div className="p-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center sticky top-[73px] z-[5]"> {/* Sticky header */}
                             <h2 className="font-medium text-gray-700 flex items-center gap-2">
                                 <Bell className="h-4 w-4 text-gray-500" />
                                 Recent Alerts
                             </h2>
-                            <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
-                                {alerts.length}
+                            <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium">
+                                {alerts.length} Total
                             </span>
                         </div>
 
-                        <div className="divide-y divide-gray-100 max-h-[70vh] overflow-y-auto">
+                        <div className="divide-y divide-gray-100 max-h-[calc(100vh-150px)] overflow-y-auto"> {/* Calculated max height */}
                             {alerts.map((a, i) => (
                                 <div
-                                    key={i}
-                                    className={`p-3 hover:bg-gray-50 cursor-pointer ${
-                                        currentAlertIndex === i ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                                    key={`${a.campaignId}-${a.timestamp}-${i}`} // More robust key
+                                    className={`p-3 cursor-pointer transition-colors ${
+                                        currentAlertIndex === i ? 'bg-blue-50 border-l-4 border-blue-500' : 'hover:bg-gray-50'
                                     }`}
                                     onClick={() => setCurrentAlertIndex(i)}
                                 >
                                      <div className="flex justify-between items-start mb-1">
-                                         <div className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${priorityBadges[a.priority].bg} ${priorityBadges[a.priority].text}`}>
+                                         <div className={`text-xs font-semibold px-1.5 py-0.5 rounded ${priorityBadges[a.priority].bg} ${priorityBadges[a.priority].text}`}>
                                            {priorityBadges[a.priority].label}
                                          </div>
-                                         <span className="text-xs text-gray-500">{formatRelativeTime(a.timestamp)}</span>
+                                         <span className="text-xs text-gray-500 flex-shrink-0 ml-2">{formatRelativeTime(a.timestamp)}</span>
                                      </div>
 
                                      <div className="flex items-center gap-2 mb-1">
-                                         <div className={`p-1 rounded ${metricColors[a.metric].bg}`}>
-                                            {metricIcons[a.metric] || <Activity className="h-5 w-5" /> } {/* Fallback icon */}
+                                         <div className={`p-1 rounded-md ${metricColors[a.metric]?.bg || metricColors.spend.bg}`}> {/* Optional chaining and fallback */}
+                                            {metricIcons[a.metric] || <Activity className="h-4 w-4" /> } {/* Fallback icon size fixed */}
                                          </div>
                                          <div>
-                                             <div className="font-medium text-sm">{a.metric.replace('_', ' ').toUpperCase()}</div>
-                                             <div className={`text-xs ${a.direction === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
+                                             <div className="font-medium text-sm text-gray-800">{a.metric.replace('_', ' ').toUpperCase()}</div>
+                                             <div className={`text-xs font-bold ${a.direction === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
+                                                 {a.direction === 'increase' ? <TrendingUp className="inline h-3 w-3 mr-0.5"/> : <TrendingDown className="inline h-3 w-3 mr-0.5" />}
                                                  {a.direction === 'increase' ? '+' : ''}{a.percentChange}%
                                              </div>
                                          </div>
                                      </div>
-
-                                     <div className="text-xs text-gray-600 mt-1 flex items-center justify-between">
-                                         <div>{a.platform}</div>
-                                         <div className={`px-1.5 py-0.5 rounded-full ${statusColors[a.status].bg} ${statusColors[a.status].text} text-xs`}>
-                                             {a.status.charAt(0).toUpperCase() + a.status.slice(1)}
+                                     <div className="text-xs text-gray-600 mt-1.5 flex items-center justify-between flex-wrap gap-1">
+                                         <span className="font-medium">{a.campaign.substring(0, 25)}{a.campaign.length > 25 ? '...' : ''}</span>
+                                         <div className="flex items-center gap-1">
+                                             <span className="text-gray-500">{a.platform}</span>
+                                             <div className={`px-1.5 py-0.5 rounded-full ${statusColors[a.status].bg} ${statusColors[a.status].text} text-xs font-medium`}>
+                                                {a.status.charAt(0).toUpperCase() + a.status.slice(1)}
+                                             </div>
                                          </div>
                                      </div>
                                      {feedbackGiven[i] && (
-                                         <div className="mt-1 text-xs text-gray-500 italic">
+                                         <div className="mt-1.5 text-xs text-gray-500 italic flex items-center gap-1">
+                                             {feedbackGiven[i] === 'Useful' && <ThumbsUp className="h-3 w-3 text-green-500" />}
+                                             {feedbackGiven[i] === 'Not Useful' && <ThumbsDown className="h-3 w-3 text-red-500" />}
+                                             {feedbackGiven[i] === 'False Positive' && <Bug className="h-3 w-3 text-yellow-500" />}
                                              Feedback: {feedbackGiven[i]}
                                          </div>
                                      )}
@@ -575,23 +742,23 @@ const EnhancedSlackAlertSystem = () => {
                 </div>
 
                 {/* Main Alert Content */}
-                <div className="flex-grow">
+                <div className="flex-grow min-w-0"> {/* Added min-w-0 for flex truncation */}
                     {/* Live Demo Notification */}
                     {showLiveDemo && (
                         <div className={`mb-4 bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between transition-all duration-500 ${
-                          animateIncoming ? 'animate-pulse' : ''
+                          animateIncoming ? 'ring-2 ring-green-300 ring-offset-1 animate-pulse' : ''
                         }`}>
                           <div className="flex items-center gap-2">
-                            <RefreshCw className="h-4 w-4 text-green-500 animate-spin" />
-                            <span className="text-green-700 font-medium">
-                              {incomingAlert ? 'New alert detected!' : 'Live demo mode: Monitoring campaigns in real-time...'}
+                            <RefreshCwIcon className="h-4 w-4 text-green-600 animate-spin" /> {/* Use Renamed Icon */}
+                            <span className="text-sm text-green-800 font-medium">
+                              {incomingAlert ? 'New alert detected!' : 'Live demo mode: Monitoring campaigns...'}
                             </span>
                           </div>
 
                           {incomingAlert && (
-                            <div className="flex items-center gap-2 text-green-700">
-                              <span className="text-sm">
-                                {incomingAlert.metric.toUpperCase()} anomaly on {incomingAlert.platform}
+                            <div className="flex items-center gap-2 text-green-800">
+                              <span className="text-sm font-medium hidden sm:inline">
+                                Incoming: {incomingAlert.metric.toUpperCase()} on {incomingAlert.platform}
                               </span>
                               <ArrowRight className="h-4 w-4" />
                             </div>
@@ -601,74 +768,82 @@ const EnhancedSlackAlertSystem = () => {
 
                     {/* Slack App UI Mockup */}
                     <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-                         <div className="bg-purple-700 p-3 text-white">
+                         <div className="bg-purple-800 p-3 text-white flex items-center justify-between"> {/* Darker purple */}
                            <div className="flex items-center gap-2">
-                             <span className="font-bold"># campaign-alerts</span>
-                             <span className="text-purple-200 text-sm">marketing-team</span>
-                             <div className="ml-auto flex items-center gap-2 text-xs">
-                               <span className="bg-purple-800 px-2 py-0.5 rounded text-white">42 members</span>
-                               <button className="hover:bg-purple-600 p-1 rounded">
+                             <span className="font-semibold text-sm"># campaign-alerts</span>
+                             <span className="text-purple-300 text-xs hidden sm:inline">marketing-ops channel</span>
+                           </div>
+                           <div className="flex items-center gap-2 text-xs">
+                               <Users className="h-4 w-4 text-purple-300" />
+                               <span className="text-purple-200">42</span>
+                               <button title="Channel Settings" className="hover:bg-purple-700 p-1 rounded">
                                  <MoreHorizontal className="h-4 w-4" />
                                </button>
-                             </div>
                            </div>
                          </div>
 
                         {/* Message Container */}
                         <div className="p-4 bg-white">
                              <div className="flex items-start mb-2">
-                                 <div className="w-10 h-10 rounded bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
+                                 {/* Bot Avatar */}
+                                 <div className="flex-shrink-0 w-10 h-10 rounded bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold mr-3 shadow">
                                    IB
                                  </div>
-                                 <div className="flex items-center">
-                                   <span className="font-bold">Insight Bot</span>
-                                   <span className="text-gray-500 text-xs ml-2">{formatTime(alert.timestamp)}</span>
-                                   <div className="ml-2 flex items-center gap-1">
-                                     <span className="bg-green-100 text-green-800 text-xs px-1.5 py-0.5 rounded">Bot</span>
-                                     {showReactions && (
-                                       <div className="flex space-x-1 ml-2">
-                                         {alert.reactions.map((reaction, idx) => (
-                                           <div key={idx} className="bg-gray-100 text-gray-800 text-xs px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                                             <span>{reaction.emoji}</span>
-                                             <span>{reaction.count}</span>
-                                           </div>
-                                         ))}
-                                         <button className="text-gray-400 hover:text-gray-600">
-                                           <span className="text-xs">+</span>
-                                         </button>
-                                       </div>
+                                 {/* Message Header */}
+                                 <div className="flex-grow min-w-0"> {/* Allow text wrapping */}
+                                     <div className="flex items-center flex-wrap gap-x-2">
+                                         <span className="font-bold text-gray-900">Insight Bot</span>
+                                         <span className="text-gray-500 text-xs">{formatTime(alert.timestamp)}</span>
+                                         <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded font-medium">App</span>
+                                     </div>
+                                     {/* Reactions (only shown if enabled) */}
+                                     {showReactions && alert.reactions && alert.reactions.length > 0 && (
+                                         <div className="flex flex-wrap gap-1 mt-1">
+                                           {alert.reactions.map((reaction, idx) => (
+                                             <div key={idx} title={`Reacted by: ${reaction.users.join(', ')}`} className="bg-gray-100 border border-gray-200 text-gray-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5 cursor-default">
+                                               <span>{reaction.emoji}</span>
+                                               <span className="font-medium">{reaction.count}</span>
+                                             </div>
+                                           ))}
+                                           <button title="Add Reaction" className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-0.5 text-xs">
+                                             <span className="text-lg leading-none">+</span>
+                                           </button>
+                                         </div>
                                      )}
-                                   </div>
                                  </div>
                              </div>
 
                             {/* Message Content */}
-                            <div className="ml-13 pl-10">
-                                 <div className="border-l-4 border-red-500 p-4 bg-white rounded-lg shadow mb-4">
-                                      <div className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-2">
-                                          <AlertTriangle className="h-5 w-5 text-red-500" />
-                                           Campaign Anomaly Alert: {alert.campaign}
+                            <div className="ml-13 pl-0 md:pl-10"> {/* Adjust padding for mobile */}
+                                 <div className={`border-l-4 ${alert.priority === 'high' ? 'border-red-500' : alert.priority === 'medium' ? 'border-yellow-500' : 'border-blue-500'} p-4 bg-white rounded-r-lg shadow-sm mb-4 border border-gray-200 border-l-[5px]`}> {/* Matched priority color */}
+                                      {/* Alert Title */}
+                                      <div className="flex items-center gap-2 text-base sm:text-lg font-bold text-gray-900 mb-2">
+                                          {alert.priority === 'high' && <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0" />}
+                                          {alert.priority === 'medium' && <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0" />}
+                                          {alert.priority === 'low' && <Info className="h-5 w-5 text-blue-500 flex-shrink-0" />}
+                                           <span className="truncate">{alert.campaign}: Campaign Anomaly Alert</span>
                                       </div>
 
-                                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-4">
-                                        <span>Campaign ID: {alert.campaignId}</span>
-                                        <span>•</span>
-                                        <span>Detected at: {formatTime(alert.timestamp)}</span>
+                                      {/* Alert Metadata */}
+                                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-gray-600 mb-4 border-b border-gray-100 pb-3">
+                                        <span>ID: <span className="font-medium text-gray-700">{alert.campaignId}</span></span>
+                                        <span className="hidden sm:inline">•</span>
+                                        <span>Detected: <span className="font-medium text-gray-700">{formatTime(alert.timestamp)}</span></span>
                                         {expandedDetails && (
                                           <>
-                                            <span>•</span>
-                                            <span>Platform: {alert.platform}</span>
-                                            <span>•</span>
-                                            <span>Audience: {alert.targetAudience}</span>
+                                            <span className="hidden sm:inline">•</span>
+                                            <span>Platform: <span className="font-medium text-gray-700">{alert.platform}</span></span>
+                                            <span className="hidden sm:inline">•</span>
+                                            <span>Audience: <span className="font-medium text-gray-700">{alert.targetAudience}</span></span>
                                           </>
                                         )}
                                       </div>
 
-                                      <div className="flex flex-wrap items-center gap-4 mb-4">
-                                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full ${
-                                          (metricColors[alert.metric] || metricColors.spend).bg} ${(metricColors[alert.metric] || metricColors.spend).text}`}> {/* Fallback color */}
-                                          {metricIcons[alert.metric] || <DollarSign className="h-5 w-5" />} {/* Fallback icon */}
-                                          <span className="font-medium capitalize">{alert.metric.replace('_', ' ').toUpperCase()}</span>
+                                      {/* Key Metrics */}
+                                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${(metricColors[alert.metric] || metricColors.spend).bg} ${(metricColors[alert.metric] || metricColors.spend).text}`}> {/* Fallback color */}
+                                          {metricIcons[alert.metric] || <DollarSign className="h-4 w-4" />} {/* Fallback icon */}
+                                          <span className="font-semibold capitalize">{alert.metric.replace('_', ' ').toUpperCase()}</span>
                                           {alert.direction === "increase" ? (
                                             <TrendingUp className="h-4 w-4" />
                                           ) : (
@@ -676,59 +851,72 @@ const EnhancedSlackAlertSystem = () => {
                                           )}
                                         </div>
 
-                                        <div className="flex items-center gap-1">
-                                          <span className="font-medium">Z-Score:</span>
-                                          <span className={`${Math.abs(alert.zScore) > 3 ? "text-red-600" : "text-orange-600"} font-bold`}>
-                                            {alert.zScore > 0 ? "+" : ""}{alert.zScore.toFixed(1)}
+                                        <div className="flex items-center gap-1 text-sm">
+                                          <span className="font-medium text-gray-700">Z-Score:</span>
+                                          <span className={`font-bold ${Math.abs(alert.zScore) >= 3 ? "text-red-600" : Math.abs(alert.zScore) >= 2 ? "text-orange-600" : "text-green-600"}`}>
+                                            {alert.zScore > 0 ? "+" : ""}{alert.zScore.toFixed(1)}σ
                                           </span>
                                         </div>
 
-                                        <div className="flex items-center gap-1">
-                                          <span className="font-medium">Change:</span>
-                                          <span className={`${
+                                        <div className="flex items-center gap-1 text-sm">
+                                          <span className="font-medium text-gray-700">Change:</span>
+                                          <span className={`font-bold ${
                                             alert.direction === "increase" ? "text-green-600" : "text-red-600"
-                                          } font-bold`}>
+                                          }`}>
                                             {alert.direction === "increase" ? "+" : "-"}{Math.abs(alert.percentChange)}%
                                           </span>
+                                          <span className="text-xs text-gray-500">(vs avg: {alert.metric === 'spend' || alert.metric === 'cpm' ? '$' : ''}{alert.meanValue?.toFixed(2)}{alert.metric === 'ctr' || alert.metric === 'conversion_rate' ? '%' : ''})</span>
                                         </div>
 
-                                        <div className={`px-2 py-0.5 rounded-full text-xs ${statusColors[alert.status].bg} ${statusColors[alert.status].text}`}>
-                                          Status: {alert.status.charAt(0).toUpperCase() + alert.status.slice(1)}
+                                        <div className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[alert.status].bg} ${statusColors[alert.status].text}`}>
+                                          {alert.status.charAt(0).toUpperCase() + alert.status.slice(1)}
                                         </div>
                                       </div>
 
-                                     {showMiniChart && alert.historyData && ( // Ensure historyData exists
-                                         <div className="mb-4 bg-gray-50 p-3 rounded border border-gray-100">
+                                     {/* Mini Chart */}
+                                     {showMiniChart && alert.historyData && alert.historyData.length > 0 && ( // Ensure historyData exists and is not empty
+                                         <div className="mb-4 bg-gray-50 p-3 rounded border border-gray-200">
                                              <div className="text-sm font-medium text-gray-700 mb-2">
-                                                 {alert.metric.replace('_', ' ').toUpperCase()} Trend (Last 6 Hours)
+                                                 {alert.metric.replace('_', ' ').toUpperCase()} Trend (Last {alert.historyData.length} Hours)
                                              </div>
-                                             <div className="h-32">
+                                             <div className="h-36 sm:h-40"> {/* Slightly taller chart */}
                                                  <ResponsiveContainer width="100%" height="100%">
-                                                     <LineChart data={alert.historyData} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}> {/* Adjust margins */}
-                                                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                                         <XAxis dataKey="time" stroke="#9ca3af" fontSize={10} />
-                                                         <YAxis stroke="#9ca3af" fontSize={10} domain={['auto', 'auto']} /> {/* Allow auto domain */}
+                                                     <LineChart data={alert.historyData} margin={{ top: 5, right: 35, bottom: 5, left: 0 }}> {/* Adjust margins */}
+                                                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                                                         <XAxis dataKey="time" stroke="#9ca3af" fontSize={10} interval="preserveStartEnd" />
+                                                         <YAxis
+                                                             stroke="#9ca3af"
+                                                             fontSize={10}
+                                                             domain={['auto', 'auto']}
+                                                             tickFormatter={(value) => value.toLocaleString()} // Format large numbers
+                                                             allowDataOverflow={true} // Prevent labels being cut off
+                                                             width={30} // Ensure space for labels
+                                                          />
                                                          <Tooltip
                                                              contentStyle={{
                                                                  border: '1px solid #e5e7eb',
-                                                                 borderRadius: '0.25rem',
-                                                                 backgroundColor: 'rgba(255, 255, 255, 0.95)'
+                                                                 borderRadius: '0.375rem',
+                                                                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                                                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                                                              }}
-                                                             formatter={(value) => [value, alert.metric.replace('_', ' ')]}
+                                                             formatter={(value) => [value.toLocaleString(), alert.metric.replace('_', ' ')]}
+                                                             labelStyle={{ fontSize: '12px', fontWeight: 'bold', color: '#374151' }}
+                                                             itemStyle={{ fontSize: '12px' }}
                                                          />
                                                          <Line
                                                              type="monotone"
                                                              dataKey="value"
                                                              stroke={(metricColors[alert.metric] || metricColors.spend).chart} /* Fallback color */
-                                                             strokeWidth={2}
-                                                             dot={{ r: 2, fill: (metricColors[alert.metric] || metricColors.spend).chart }}
-                                                             activeDot={{ r: 4 }}
+                                                             strokeWidth={2.5}
+                                                             dot={{ r: 3, fill: (metricColors[alert.metric] || metricColors.spend).chart }}
+                                                             activeDot={{ r: 5, strokeWidth: 2, stroke: '#ffffff' }}
                                                          />
-                                                         <ReferenceLine y={alert.meanValue} stroke="#9ca3af" strokeDasharray="3 3" label={{
+                                                         <ReferenceLine y={alert.meanValue} stroke="#6b7280" strokeDasharray="4 4" label={{
                                                              position: 'right',
-                                                             value: 'Avg',
-                                                             fill: '#9ca3af',
-                                                             fontSize: 10
+                                                             value: `Avg (${alert.meanValue?.toLocaleString()})`,
+                                                             fill: '#6b7280',
+                                                             fontSize: 10,
+                                                             dy: -5 // Adjust label position slightly
                                                          }} />
                                                      </LineChart>
                                                  </ResponsiveContainer>
@@ -736,21 +924,22 @@ const EnhancedSlackAlertSystem = () => {
                                          </div>
                                      )}
 
-                                        <div className="border-t border-gray-200 pt-4">
-                                            <div className="mb-3">
-                                              <h3 className="font-semibold text-gray-800 mb-1">WHAT HAPPENED:</h3>
-                                              <p className="text-gray-700">{gptResponse.whatHappened}</p>
+                                        {/* GPT Analysis */}
+                                        <div className="border-t border-gray-100 pt-4 space-y-3 text-sm">
+                                            <div>
+                                              <h3 className="font-semibold text-gray-800 mb-1 flex items-center gap-1"><BrainCircuit className="h-4 w-4 text-purple-600" /> WHAT HAPPENED:</h3>
+                                              <p className="text-gray-700 leading-relaxed">{gptResponse.whatHappened}</p>
                                             </div>
 
-                                            <div className="mb-3">
-                                              <h3 className="font-semibold text-gray-800 mb-1">WHY IT MATTERS:</h3>
-                                              <p className="text-gray-700">{gptResponse.whyItMatters}</p>
+                                            <div>
+                                              <h3 className="font-semibold text-gray-800 mb-1 flex items-center gap-1"><Target className="h-4 w-4 text-red-600" /> WHY IT MATTERS:</h3>
+                                              <p className="text-gray-700 leading-relaxed">{gptResponse.whyItMatters}</p>
                                             </div>
 
-                                            {expandedDetails && (
+                                            {expandedDetails && gptResponse.recommendations && gptResponse.recommendations.length > 0 && (
                                               <div>
-                                                <h3 className="font-semibold text-gray-800 mb-1">RECOMMENDATIONS:</h3>
-                                                <ul className="text-gray-700 list-disc pl-5 space-y-1">
+                                                <h3 className="font-semibold text-gray-800 mb-1 flex items-center gap-1"><CheckCircle className="h-4 w-4 text-green-600" /> RECOMMENDATIONS:</h3>
+                                                <ul className="text-gray-700 list-disc pl-5 space-y-1 leading-relaxed">
                                                   {gptResponse.recommendations.map((rec, idx) => (
                                                     <li key={idx}>{rec}</li>
                                                   ))}
@@ -758,70 +947,73 @@ const EnhancedSlackAlertSystem = () => {
                                               </div>
                                             )}
                                         </div>
-
                                  </div>
 
                                 {/* Action Buttons & Feedback Section */}
                                 <div className="mb-4">
-                                    <div className="flex flex-wrap gap-2 mb-3">
+                                    <div className="flex flex-wrap gap-2 mb-3 border-b border-gray-100 pb-3">
                                         <a
                                             href={alert.dashboardUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium"
+                                            title="Open related dashboard in new tab"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 text-xs sm:text-sm font-medium transition-colors shadow-sm"
                                         >
                                             View Dashboard
-                                            <ExternalLink className="h-4 w-4" />
+                                            <ExternalLink className="h-3.5 w-3.5" />
                                         </a>
-                                         <button className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm font-medium">
-                                           <CheckCircle className="h-4 w-4" />
+                                         <button title="Acknowledge this alert" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-xs sm:text-sm font-medium transition-colors">
+                                           <CheckCircle className="h-3.5 w-3.5" />
                                            Acknowledge
                                          </button>
 
-                                         <button className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 text-sm font-medium">
-                                           <UserCheck className="h-4 w-4" />
+                                         <button title="Assign alert to a team member" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 text-xs sm:text-sm font-medium transition-colors">
+                                           <UserCheck className="h-3.5 w-3.5" />
                                            Assign
                                          </button>
 
-                                         <button className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm font-medium">
-                                           <EyeOff className="h-4 w-4" />
+                                         <button title="Mute similar alerts for a period" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-xs sm:text-sm font-medium transition-colors">
+                                           <EyeOff className="h-3.5 w-3.5" />
                                            Mute Similar
                                          </button>
 
-                                         <button className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-sm font-medium">
-                                           <Flag className="h-4 w-4" />
+                                         <button title="Report an issue with this alert" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-xs sm:text-sm font-medium transition-colors">
+                                           <Flag className="h-3.5 w-3.5" />
                                            Report Issue
                                          </button>
                                     </div>
 
                                     {/* Feedback Section */}
-                                    <div className="border-t border-gray-100 pt-3 mt-3">
+                                    <div className="pt-3">
                                         <h4 className="text-sm font-medium text-gray-600 mb-2">Was this alert helpful?</h4>
                                         {!currentFeedback ? (
                                             <div className="flex flex-wrap gap-2">
                                                 <button
                                                     onClick={() => handleFeedback('Useful')}
-                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-xs font-medium"
+                                                    title="Mark alert as useful"
+                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full hover:bg-green-200 text-xs font-medium transition-colors border border-green-200"
                                                 >
-                                                    <ThumbsUp className="h-3 w-3" /> Useful
+                                                    <ThumbsUp className="h-3.5 w-3.5" /> Useful
                                                 </button>
                                                 <button
                                                     onClick={() => handleFeedback('Not Useful')}
-                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-medium"
+                                                    title="Mark alert as not useful"
+                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full hover:bg-red-200 text-xs font-medium transition-colors border border-red-200"
                                                 >
-                                                    <ThumbsDown className="h-3 w-3" /> Not Useful
+                                                    <ThumbsDown className="h-3.5 w-3.5" /> Not Useful
                                                 </button>
                                                 <button
                                                     onClick={() => handleFeedback('False Positive')}
-                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-xs font-medium"
+                                                    title="Mark alert as a false positive"
+                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 text-xs font-medium transition-colors border border-yellow-200"
                                                 >
-                                                    <Bug className="h-3 w-3" /> False Positive {/* Corrected Icon */}
+                                                    <Bug className="h-3.5 w-3.5" /> False Positive
                                                 </button>
                                             </div>
                                         ) : (
-                                            <div className="text-sm text-gray-500 italic flex items-center gap-1">
+                                            <div className="text-sm text-gray-500 italic flex items-center gap-1.5 py-1">
                                                 <CheckCircle className="h-4 w-4 text-green-500" />
-                                                Thank you for your feedback ({currentFeedback})!
+                                                Feedback received: <span className="font-medium">{currentFeedback}</span>. Thank you!
                                             </div>
                                         )}
                                     </div>
@@ -830,59 +1022,65 @@ const EnhancedSlackAlertSystem = () => {
 
                                 {/* Thread Replies */}
                                 {showReactions && alert.comments && alert.comments.length > 0 && ( // Check comments exist
-                                     <div className="mt-2 border-t border-gray-100 pt-3">
+                                     <div className="mt-2 border-t border-gray-200 pt-3">
                                          <button
-                                             className="text-sm text-blue-600 mb-3 flex items-center gap-1"
+                                             className="text-sm text-blue-600 hover:text-blue-800 mb-3 flex items-center gap-1 font-medium"
                                              onClick={() => setShowThreads(!showThreads)}
                                          >
                                              {showThreads ? (
                                                  <>
-                                                     <ChevronUp className="h-3 w-3" />
-                                                     Hide thread
+                                                     <ChevronUp className="h-4 w-4" />
+                                                     Hide thread ({alert.comments.length} {alert.comments.length === 1 ? 'reply' : 'replies'})
                                                  </>
                                              ) : (
                                                  <>
-                                                     <ChevronDown className="h-3 w-3" />
+                                                     <ChevronDown className="h-4 w-4" />
                                                      Show thread ({alert.comments.length} {alert.comments.length === 1 ? 'reply' : 'replies'})
                                                  </>
                                              )}
                                          </button>
 
                                          {showThreads && (
-                                             <div className="space-y-3 pl-4 border-l-2 border-gray-200">
+                                             <div className="space-y-3 pl-4 border-l-2 border-gray-200 ml-2">
                                                  {alert.comments.map((comment, idx) => (
                                                    <div key={idx} className="flex items-start">
-                                                       <div className="w-8 h-8 rounded bg-gray-300 flex items-center justify-center text-white font-bold mr-2 text-xs">
+                                                       {/* Avatar */}
+                                                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold mr-2 text-xs shadow-inner">
                                                          {comment.avatar}
                                                        </div>
-                                                       <div className="flex-grow">
-                                                         <div className="flex items-center">
-                                                           <span className="font-medium text-sm">{comment.user}</span>
-                                                           <span className="text-gray-500 text-xs ml-2">{formatRelativeTime(comment.time)}</span>
+                                                       {/* Comment Body */}
+                                                       <div className="flex-grow bg-gray-50 rounded-lg p-2 border border-gray-100">
+                                                         <div className="flex items-center justify-between">
+                                                           <span className="font-medium text-sm text-gray-800">{comment.user}</span>
+                                                           <span className="text-gray-500 text-xs">{formatRelativeTime(comment.time)}</span>
                                                          </div>
-                                                         <p className="text-gray-700 text-sm mt-1">{comment.text}</p>
-
-                                                         {comment.reactions && comment.reactions.length > 0 && ( // Check reactions exist
-                                                           <div className="flex space-x-1 mt-1">
+                                                         <p className="text-gray-700 text-sm mt-1 leading-relaxed">{comment.text}</p>
+                                                         {/* Comment Reactions */}
+                                                         {comment.reactions && comment.reactions.length > 0 && (
+                                                           <div className="flex flex-wrap gap-1 mt-1.5">
                                                              {comment.reactions.map((reaction, ridx) => (
-                                                               <div key={ridx} className="bg-gray-100 text-gray-800 text-xs px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                                               <div key={ridx} className="bg-white border border-gray-200 text-gray-700 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5 cursor-default">
                                                                  <span>{reaction.emoji}</span>
-                                                                 <span>{reaction.count}</span>
+                                                                 <span className="font-medium">{reaction.count}</span>
                                                                </div>
                                                              ))}
+                                                              <button title="Add Reaction" className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-0.5 text-xs">
+                                                                  <span className="text-lg leading-none">+</span>
+                                                              </button>
                                                            </div>
                                                          )}
                                                        </div>
                                                    </div>
                                                  ))}
 
-                                                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
+                                                 {/* Reply Input */}
+                                                 <div className="flex items-center gap-2 pt-3 border-t border-gray-100 mt-3">
                                                    <input
                                                        type="text"
                                                        placeholder="Reply to thread..."
-                                                       className="w-full text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-blue-500 focus:border-blue-500"
+                                                       className="flex-grow text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                                                    />
-                                                   <button className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-blue-700">
+                                                   <button className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-blue-700 transition-colors font-medium">
                                                      Send
                                                    </button>
                                                  </div>
@@ -894,10 +1092,11 @@ const EnhancedSlackAlertSystem = () => {
                         </div>
                     </div>
 
+                    {/* Footer Note */}
                     <div className="mt-4 text-center text-gray-500 max-w-3xl mx-auto">
-                       <p className="text-sm">
-                         This alert was automatically generated using statistical analysis (z-score ±{alert.zScore ? Math.abs(alert.zScore).toFixed(1) : 'N/A'}σ) to detect abnormal patterns.
-                         GPT-4 translates these technical findings into actionable insights for your marketing team.
+                       <p className="text-xs leading-relaxed">
+                         This alert was generated via statistical analysis (z-score: <span className="font-medium">{alert.zScore ? `${alert.zScore > 0 ? '+' : ''}${Math.abs(alert.zScore).toFixed(1)}σ` : 'N/A'}</span>).
+                         GPT-4 provides context and actionable insights. Feedback helps improve future alerts.
                        </p>
                      </div>
                 </div>
@@ -906,4 +1105,52 @@ const EnhancedSlackAlertSystem = () => {
     );
 };
 
-export default EnhancedSlackAlertSystem;
+
+//===============================================
+// Main App Component (Manages Views)
+//===============================================
+const App = () => {
+    const [activeView, setActiveView] = useState('pipeline'); // 'pipeline' or 'alerts'
+
+  return (
+    // Ensure container takes full width and centers content, arranged vertically
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col items-center py-10">
+      <div className="w-full max-w-7xl px-4">
+
+        {/* View Navigation Buttons */}
+        <div className="mb-6 text-center space-x-2 sm:space-x-4">
+          <button
+            onClick={() => setActiveView('pipeline')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeView === 'pipeline'
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+            }`}
+          >
+            Pipeline Visualization
+          </button>
+          <button
+            onClick={() => setActiveView('alerts')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeView === 'alerts'
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+            }`}
+          >
+            Detailed Alert View
+          </button>
+        </div>
+
+        {/* Conditionally Rendered View */}
+        {activeView === 'pipeline' ? (
+          <SlackInsightBot />
+        ) : (
+          <EnhancedSlackAlertSystem />
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+export default App; // Export the main App component
